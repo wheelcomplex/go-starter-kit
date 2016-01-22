@@ -11,23 +11,24 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 * title, Open Graph and other domain-specific meta tags render for each page at the server and at the client
 * server side redirect
 * embedding static files into artefact via bindata
-* high performance [gin](https://github.com/gin-gonic/gin/) framework
+* high performance [echo](https://github.com/labstack/echo) framework
 * advanced cli via [cli](https://github.com/codegangsta/cli)
 * Makefile based project
 * one(!) terminal window process for development
 * routing via [react-router](https://github.com/rackt/react-router)
 * ES6 & JSX via [babel-loader](https://github.com/babel/babel-loader) with minimal runtime dependency footprint
-* flux architecture via [Flummox](https://github.com/acdlite/flummox)
-* stylus css styles without global namespace via [css-loader](https://github.com/webpack/css-loader) & css-module
+* [redux](http://rackt.org/redux/) as state container
+* [redux-devtools](https://github.com/gaearon/redux-devtools)
+* stylus css styles without global namespace via [css-loader](https://github.com/webpack/css-loader) & css-modules
 * separate css file to avoid FOUC
-* hot reload components & styles via [react-hot-loader](https://github.com/gaearon/react-hot-loader) & [HMR](http://webpack.github.io/docs/hot-module-replacement.html)
+* hot reloading via [react-transform](https://github.com/gaearon/babel-plugin-react-transform) & [HMR](http://webpack.github.io/docs/hot-module-replacement.html)
 * webpack bundle builder
 * eslint and golint rules for Makefile
 
 ## Dependencies
 
 * [golang](http://golang.org/)
-* [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/), only for javascript workflow
+* [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/), only to build the application bundle at compile time
 * [GNU make](https://www.gnu.org/software/make/)
 * [fswatch](https://github.com/emcrisostomo/fswatch/)
 
@@ -40,34 +41,59 @@ Clone the repo:
 ```
 $ git clone git@github.com:olebedev/go-starter-kit.git && cd go-starter-kit
 ```
-Install javscript dependencies:
+Install javascript dependencies:
 
 ```
 $ npm i
 ```
-Install Golang dependencies:
+
+Install Golang dependencies.
 
 ```
 $ export GOPATH=`pwd` # the most important step, ensure that you do it
-$ go get app/...
-$ go get github.com/jteeuwen/go-bindata/...
+$ export GOBIN=$GOPATH/bin # optional, redefine, if it already was defined
 ```
+
+There are two ways to do it:
+
+1. Traditional `go get`(__not recommended__).
+
+  ```
+  $ go get ./...
+  $ go get github.com/jteeuwen/go-bindata/...
+  ```
+
+2. Via revision locking tool - [srlt](https://github.com/olebedev/srlt).  
+Make sure that you have srlt installed.
+
+  ```
+  $ srlt r && srlt e go install {{.Name}}/...
+  ```
+
+## Run development
+
 Start dev server:
 
 ```
 $ make serve
 ```
-that's it. Open [http://localhost:5001/](http://localhost:5001/) at your browser. Now you ready to start coding your awesome project.
+
+that's it. Open [http://localhost:5001/](http://localhost:5001/)(if you use default port) at your browser. Now you ready to start coding your awesome project.
 
 ## Build
 
 Install dependencies and just type `NODE_ENV=production make build`. This rule is producing webpack build and regular golang build after that. Result you can find at `$GOPATH/bin`.
 
+## TODO
 
+- [x] migrate from react-hot-loader to react-transform-hmr
+- [x] update react to 0.14.x
+- [x] update react-router to 1.x
+- [x] render final HTML markup at Golang side
+- [x] migrate from Flummox to Redux
+- [x] migrate from Stylus to PostCSS
+- [x] migrate from Gin to Echo
+- [ ] improve README and write an article to describe the project
 
-
-
-
-
-
-
+## License
+MIT
